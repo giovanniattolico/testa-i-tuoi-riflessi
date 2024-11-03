@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulatore Semaforo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #traffic-light {
+            width: 100px;
+            height: 300px;
+            margin: 0 auto;
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .light {
+            width: 60px;
+            height: 60px;
+            margin: 20px auto;
+            border-radius: 50%;
+            background-color: #999;
+        }
+        #red {
+            background-color: red;
+        }
+        #yellow {
+            background-color: yellow;
+        }
+        #green {
+            background-color: green;
+        }
+        #start {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simulatore Semaforo</h1>
+    <div id="traffic-light">
+        <div id="red" class="light"></div>
+        <div id="yellow" class="light"></div>
+        <div id="green" class="light"></div>
+    </div>
+    <button id="start">Inizia</button>
+    <p id="message"></p>
+    <p>Tempo di reazione: <span id="reaction-time">0</span> ms</p>
+    <script src="script.js">
+        let redLight = document.getElementById('red');
+let yellowLight = document.getElementById('yellow');
+let greenLight = document.getElementById('green');
+let startButton = document.getElementById('start');
+let message = document.getElementById('message');
+let reactionTimeDisplay = document.getElementById('reaction-time');
+
+let startTime, endTime;
+
+startButton.addEventListener('click', startGame);
+
+function startGame() {
+    resetLights();
+    message.textContent = 'Attendi...';
+    let randomDelay = Math.floor(Math.random() * 5000) + 2000; // 2-7 secondi
+    setTimeout(() => {
+        greenLight.style.backgroundColor = 'green';
+        startTime = new Date().getTime();
+        message.textContent = 'Clicca il pulsante!';
+    }, randomDelay);
+
+    document.addEventListener('click', measureReaction);
+}
+
+function measureReaction() {
+    if (greenLight.style.backgroundColor === 'green') {
+        endTime = new Date().getTime();
+        let reactionTime = endTime - startTime;
+        reactionTimeDisplay.textContent = reactionTime;
+        message.textContent = 'Hai cliccato in ' + reactionTime + ' ms';
+        document.removeEventListener('click', measureReaction);
+    }
+}
+
+function resetLights() {
+    redLight.style.backgroundColor = '#999';
+    yellowLight.style.backgroundColor = '#999';
+    greenLight.style.backgroundColor = '#999';
+}
+
+    </script>
+</body>
+</html>
